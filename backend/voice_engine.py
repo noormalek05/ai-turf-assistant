@@ -8,8 +8,13 @@ import edge_tts
 load_dotenv()
 
 client = Groq(api_key=os.getenv("GROQ_API_KEY"))
-RECORDINGS_DIR = Path(__file__).resolve().parent.parent / "recordings"
-RECORDINGS_DIR.mkdir(exist_ok=True)
+
+RECORDINGS_DIR = (
+    Path("/tmp/recordings")
+    if os.getenv("VERCEL")
+    else Path(__file__).resolve().parent.parent / "recordings"
+)
+RECORDINGS_DIR.mkdir(parents=True, exist_ok=True)
 
 VOICE_ENGLISH = "en-IN-NeerjaNeural"
 VOICE_HINDI = "hi-IN-SwaraNeural"
