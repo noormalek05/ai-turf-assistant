@@ -1,32 +1,55 @@
-# Noor's AI Turf Call Assistant
+# 🎙️ Noor's AI Turf Call Assistant
 
-An end-to-end automated voice receptionist and sports turf booking system powered by **FastAPI**, **Twilio Voice API**, **Large Language Models (LLM)**, and **SQLite**. Designed to handle real-time bilingual phone conversations (**English & Hindi**), verify live slot availability, prevent double-bookings, and synchronize call transcripts and revenue analytics to a live admin dashboard.
+AI-Powered Bilingual Voice Receptionist & Automated Turf Booking Platform
 
----
+## 🚀 Live Application
 
-## Key Features
+👉 https://ai-turf-assistant.vercel.app
 
-- **Automated Bilingual Telephony (English & Hindi):** Integrates with Twilio Programmable Voice (`<Gather>` & Amazon Polly `Polly.Aditi`) for real-time speech-to-text capture and natural neural voice responses.
-- **Stateful Conversational Booking Engine:** Multi-turn AI state machine (`ai_brain.py`) extracts turf preference (*Classic Box*, etc.), booking date, time slot, customer name, and phone number while enforcing conflict-free slot validation.
-- **Real-Time Admin & Analytics Dashboard:** Single-page web interface displaying confirmed reservations, dynamic day/night pricing calculations, total revenue tracking, and searchable call transcripts.
-- **Dual-Mode Call Testing:** Supports both live PSTN phone calls via Twilio webhooks and an interactive browser-based audio call simulator with MP3 recording playback.
-- **Cloud-Ready Serverless Deployment:** Configured with environment-aware storage (`/tmp` fallback for Vercel serverless functions) and automatic SQLite schema migration.
+**Noor's AI Turf Call Assistant** is a full-stack conversational voice AI application that combines **Telephony Automation (Twilio Voice)**, **Speech-to-Text (`Whisper-large-v3-turbo`)**, **LLM Reasoning (Groq)**, and **Neural Text-to-Speech (`Edge-TTS`)** to handle real-world customer phone calls and automate sports turf slot reservations.
+
+It conducts natural, real-time conversations in both **English and Hindi**, checks real-time slot availability, confirms bookings, records call audio, and updates a live management dashboard.
 
 ---
 
-## System Architecture
+## 🚀 Features
+
+### 📞 Bilingual AI Voice Receptionist
+* **Real-Time Phone Call Handling:** Answers incoming and outbound customer calls automatically via Twilio Voice webhooks (`/twilio/voice` and `/twilio/gather`)[cite: 10]
+* **English & Hindi Language Support:** Greets callers bilingually[cite: 10], detects preferred language automatically, and responds using natural Indian voices (`en-IN-NeerjaNeural` and `hi-IN-SwaraNeural`)
+* **Ultra-Fast Speech Recognition:** Transcribes Hindi, Hinglish, and English caller speech accurately using Groq's `whisper-large-v3-turbo` model
+* **Conversational Slot Booking:** Extracts caller name, sport/turf preference, date, and time slot naturally across multi-turn dialogue
+
+### 📊 Live Booking & Call Operations Dashboard
+* **Real-Time Reservations Table:** Displays confirmed turf bookings, customer details, dates, and time slots
+* **Call Logs & Transcripts:** Stores full conversation histories and call outcomes for quick review
+* **Downloadable Call Recordings:** Stitches caller and AI audio segments into playable MP3 call recordings
+* **Serverless Cloud Deployment:** Hosted 24/7 on Vercel with automatic HTTPS webhook routing[cite: 10]
+
+---
+
+## 🛠️ Tech Stack
+
+* **Backend:** Python, FastAPI, Uvicorn
+* **Telephony & Webhooks:** Twilio Voice API (TwiML)
+* **Speech-to-Text & LLM:** Groq API (`whisper-large-v3-turbo`)
+* **Text-to-Speech:** Microsoft Edge-TTS (`en-IN-NeerjaNeural`, `hi-IN-SwaraNeural`)
+* **Database:** SQLite
+* **Frontend:** HTML5, CSS3, Vanilla JavaScript
+* **Deployment:** Vercel Serverless Functions[cite: 10]
+
+---
+
+## 📂 Project Structure
 
 ```text
-Caller (PSTN Phone / Browser)
-        │
-        ▼
-Twilio Voice Webhook (/twilio/voice & /twilio/gather)
-        │
-        ▼
-FastAPI Backend (backend/main.py)
-   ├──► Conversational AI Engine (backend/ai_brain.py)
-   ├──► Voice & Audio Pipeline (backend/voice_engine.py)
-   └──► SQLite Persistence Layer (backend/database.py)
-        │
-        ▼
-Admin Dashboard & Live Metrics (frontend/index.html)
+ai-turf-assistant/
+├── backend/
+│   ├── main.py            # FastAPI routes & Twilio TwiML voice webhooks
+│   ├── ai_brain.py        # Conversational LLM logic & booking extraction
+│   ├── voice_engine.py    # Groq Whisper STT, Edge-TTS & MP3 call recorder
+│   └── database.py        # SQLite booking & call log persistence
+├── frontend/
+│   └── index.html         # Live turf booking & call monitoring dashboard
+├── requirements.txt       # Python dependencies
+└── vercel.json            # Vercel serverless routing configuration
